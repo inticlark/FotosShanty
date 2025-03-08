@@ -2,7 +2,7 @@
 import os
 from flask import Flask
 from flask import render_template, request, redirect, session
-from flaskext.mysql import MySQL
+from flask_mysqldb import MySQL
 from datetime import datetime
 from flask import send_from_directory
 from datetime import date
