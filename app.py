@@ -8,15 +8,17 @@ from flask import send_from_directory
 from datetime import date
 from werkzeug.security import check_password_hash
 
-app=Flask(__name__)
-app.secret_key="develoteca"
-mysql=MySQL()
+app = Flask(__name__)
+app.secret_key = "develoteca"
 
-app.config['MYSQL_DATABASE_HOST']='localhost'
-app.config['MYSQL_DATABASE_USER']='root'
-app.config['MYSQL_DATABASE_PASSWORD']=''
-app.config['MYSQL_DATABASE_DB']='sitio' 
-mysql.init_app(app)
+# Configuración de MySQL
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'sitio'
+
+# Inicialización de MySQL
+mysql = MySQL(app)
 
 @app.route('/') 
 def inicio():
@@ -37,7 +39,7 @@ def fotos():
     categoria = request.args.get('categoria')
 
 
-    conexion = mysql.connect()
+    conexion = mysql.connection 
     cursor = conexion.cursor()
     if categoria:
         cursor.execute("SELECT * FROM `fotos` WHERE `categoria_fotografia` = %s", (categoria,))
@@ -77,7 +79,7 @@ def admin_login():
         print(f"Contraseña ingresada: {_password}")  # Verifica la contraseña ingresada
 
         # Conectar a la base de datos
-        conexion = mysql.connect()
+        conexion = mysql.connection 
         cursor = conexion.cursor()
 
         # Ejecuta la consulta para obtener el nombre de usuario y la contraseña desde la tabla de usuarios
@@ -114,7 +116,7 @@ def admin_fotos():
     if 'login' not in session:
         return redirect("/admin/login")
 
-    conexion = mysql.connect()
+    conexion = mysql.connection 
     cursor = conexion.cursor()
     cursor.execute("SELECT * FROM `fotos`")
     fotos = cursor.fetchall()
@@ -141,7 +143,7 @@ def admin_libros_guardar():
 
     sql= "INSERT INTO `fotos` (`id_foto`, `nombre_fotografia`, `imagen`, `categoria_fotografia`, `fecha_subida`) VALUES (NULL, %s, %s, %s, %s);"
     datos=(_nombre,nuevoNombre,_categoria,_date )
-    conexion = mysql.connect()
+    conexion = mysql.connection 
     cursor=conexion.cursor()
     cursor.execute(sql,datos)
     conexion.commit()
@@ -163,7 +165,7 @@ def admin_fotos_borrar():
     _id=request.form['txtID']
     print(_id)
 
-    conexion=mysql.connect()
+    conexion=mysql.connection 
     cursor = conexion.cursor()
     cursor.execute("SELECT imagen FROM `fotos` WHERE id_foto= %s", (_id))
     fotos=cursor.fetchall()
@@ -173,7 +175,7 @@ def admin_fotos_borrar():
     if os.path.exists("templates/sitio/img/"+str(fotos[0][0])):
         os.unlink("templates/sitio/img/"+str(fotos[0][0]))
 
-    conexion=mysql.connect()
+    conexion=mysql.connection 
     cursor = conexion.cursor()
     cursor.execute("DELETE FROM fotos WHERE id_foto=%s", (_id))
     conexion.commit()
