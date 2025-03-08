@@ -155,6 +155,8 @@ button[type="submit"].btn-secondary:hover {
   
   .etiqueta {
     font-size: 20px; /* Ajusta el tamaño del texto según sea necesario */
+    font-weight: 700;
+    
   }
 
 .padding_galeria {
