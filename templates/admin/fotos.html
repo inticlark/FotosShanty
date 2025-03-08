@@ -1,0 +1,146 @@
+{% include 'admin/cabecera.html' %}
+<br/>
+<div class="container">
+    <div class="row pt-5 padding_galeria">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">Datos imagen</div>
+                <div class="card-body">
+                   <form action="/admin/fotos/guardar" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Nombre imagen:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="txtNombre"
+                                id="txtNombre"
+                                aria-describedby="helpId"
+                                placeholder="Escriba imagen"
+                            />
+                        </div>
+                            
+                        <div class="mb-3">
+                            <label for="" class="form-label">Imagen:</label>
+                            <input
+                                type="file"
+                                class="form-control"
+                                name="txtImagen"
+                                id="txtImagen"
+                                aria-describedby="helpId"
+                                placeholder="Seleccione imagen"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Categoria:</label>
+                            <select class="form-select" aria-label="Default select example"name="txtCategoria"
+                            id="txtCategoria">
+                                <option selected>Seleccione Categoria</option>
+                                <option value="Animales">Animales</option>
+                                <option value="Paisaje">Paisaje</option>
+                                <option value="Retrato">Retrato</option>
+                                <option value="Fiestas">Fiestas</option>
+                              </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="" class="form-label">Fecha:</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="txtDate"
+                                id="txtDate"
+                                placeholder="fecha"
+                                value="{{ today }}"  
+                                min="{{ today }}"
+                                max="{{ today }}"
+                                readonly
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Agregar
+                        </button>
+                            
+                            
+
+                    </form>   
+
+                </div>
+                <div class="card-footer text-muted">Footer</div>
+            </div>
+        </div>
+            <div class="col-md-7">
+
+                <div
+                    class="table-responsive"
+                >
+                    <table
+                        class="table table-primary"
+                    >
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for fotos in fotos %}
+                            <tr class=""> 
+                                <td>{{ fotos[0] }}</td>
+                                <td>
+                                    
+                                    {{ fotos[1] }}
+                                
+                                </td>
+                                <td>
+                                    <img
+                                        width="100"
+                                        src="/img/{{ fotos[2] }}"
+                                        class="img-fluid rounded-top"
+                                        alt=""
+                                    /></td>
+                                <td>{{ fotos[3] }}</td>
+                                <td>{{ fotos[4] }}</td>
+                                <td>
+                                    <form action="/admin/fotos/borrar" method="post">
+
+                                        <input value="{{ fotos[0] }}" type="hidden" name="txtID" id="yxyID">
+                                        <button
+                                            type="submit"
+                                            class="btn btn-danger"
+                                        >
+                                           Eliminar
+                                        </button>
+                                        
+
+                                    </form>
+
+                                </td>
+                                
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+            </div>
+        
+        </div>
+</div>
+
+
+
+
+
+{% include 'admin/pie.html' %}

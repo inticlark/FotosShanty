@@ -1,0 +1,16 @@
+{% include 'admin/cabecera.html' %}
+<div class="w-100 d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="p-5 bg-light">
+        <div class="container">
+            <h2 class="display-1">Bienvenida <strong>{{ session['usuario'] }}</strong> al administrador del sitio</h2>
+            <p class="lead">Aquí podrá administrar las fotos del sitio web.</p>
+            <hr class="my-2">
+            
+            
+            <a href="/admin/fotos" class="btn btn-outline-primary" role="button">
+                Empezar la gestión
+            </a>
+        </div>
+    </div>
+</div>
+{% include 'admin/pie.html' %}

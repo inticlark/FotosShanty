@@ -1,0 +1,35 @@
+{% include 'sitio/cabecera.html' %}
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{ url_for('static', filename='ImagenesInicio/img1.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="{{ url_for('static', filename='ImagenesInicio/img2.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="{{ url_for('static', filename='ImagenesInicio/img3.jpg') }}" class="d-block w-100" alt="...">
+        </div>
+      </div>
+    </div>
+
+<div id="div_central">
+  <div id="FOTITO" class="p-5 bg-ligth">
+    <img src="img/LogoShanty.png"> <!-- Ajusta la altura según sea necesario --> 
+      <p class="lead">
+          <a class="bnt bnt-success bnt-lg" role="button"></a>
+      </p>
+      <a
+        id="ver_portafolio" href="/fotos" class="btn btn-outline-secondary"
+        type="button"
+            >
+        Ver Portafolio
+      </a>        
+  </div>
+</div>
+
+<footer id="footer_index">
+  <p>&copy; 2024 Shanty Fotografía</p>
+</footer>
+        
+        

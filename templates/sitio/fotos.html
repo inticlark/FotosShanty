@@ -1,0 +1,56 @@
+{% include 'sitio/cabecera.html' %}
+
+<div class="container">
+    <!-- Filtro por categoría -->
+    <div id="filtro" class="row">
+        <div class="col offset-md-12">
+            <form action="/fotos" method="get">
+                <div class="form-group">
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-2">
+                            <div class="contenedor_label_filtro">
+                                <span class="etiqueta">Categoria: </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <select name="categoria" id="categoria" class="form-control">
+                                <option value="">Todas</option>
+                                <option value="animales">Animales</option>
+                                <option value="paisaje">Paisaje</option>
+                                <option value="retrato">Retrato</option>
+                                <option value="fiestas">Fiestas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <span class="p-2">
+                                    Buscar 
+                                </span>
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search " viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg> 
+                                </button> 
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container mt-5 padding_galeria">
+        
+        <div class="row fotos-grid">
+            {% for foto in fotos %}
+            <div class="p-0 col ">
+                <div class="card">
+                    <img class="card-img-top" src="/img/{{ foto[2] }}" alt="Title">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'sitio/pie.html' %}
