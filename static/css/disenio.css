@@ -1,29 +1,29 @@
-/* Estilos generales */
+
 html, body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: rgba(0, 0, 0, 0.04);    /* Evita el scroll */
+    background-color: rgba(0, 0, 0, 0.04);   
 }
 
 
 
 /* Carrusel */
 #carouselExampleSlidesOnly {
-    position: fixed; /* Fija el carrusel en la ventana */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Coloca el carrusel detrás del contenido */
+    z-index: -1;
 }
 
 .carousel, .carousel-inner, .carousel-item {
-    height: 100vh; /* Ocupa toda la altura de la ventana */
+    height: 100vh; 
 }
 
 .carousel-item img {
-    object-fit: cover; /* Asegura que la imagen cubra todo el espacio */
+    object-fit: cover; 
     width: 100%;
     height: 100%;
 }
@@ -33,47 +33,45 @@ html, body {
 }
 
 
-/* Contenido principal */
 #FOTITO {
     position: relative;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0); /* Fondo semi-transparente */
+    background-color: rgba(255, 255, 255, 0); 
     padding: 20px;
     border-radius: 10px;
-    margin-top: 20px; /* Ajusta la posición vertical sin margen negativo */
-    text-align: center; /* Centra el contenido */
+    margin-top: 20px; 
+    text-align: center; 
 }
 
 
 #footer_index{
     
-    background-color: rgba(53, 51, 51, 0.79); /* Fondo semi-transparente */
+    background-color: rgba(53, 51, 51, 0.79); 
     color: white;
     text-align: center;
     padding: 10px;
-    position: fixed; /* Fija el footer en la parte inferior */
+    position: fixed; 
     bottom: 0;
     width: 100%;
-    z-index: 20; /* Asegura que el footer esté por encima del carrusel */
+    z-index: 20; 
     
     
 }
 footer {
-    background-color: rgba(53, 51, 51, 0.79); /* Fondo semi-transparente */
+    background-color: rgba(53, 51, 51, 0.79); 
     color: white;
     text-align: center;
     padding: 10px;
-    position: fixed; /* Cambia de fixed a relative para que se coloque abajo del contenido */
+    position: fixed; 
     bottom: 0px;
     width: 100%;
-    z-index: 20; /* Asegura que el footer esté por encima del contenido */
-    margin-top: 30px; /* Añade un margen para evitar que se pegue al contenido anterior */
+    z-index: 20; 
+    margin-top: 30px; 
 }
 
-/* Estilos para formularios */
+
 .form-group {
-    margin-bottom: 20px; /* Espaciado entre grupos de formulario */
-}
+    margin-bottom: 20px; }
 
 select.form-control, .btn {
     padding: 8px 12px;
@@ -85,7 +83,7 @@ select.form-control, .btn {
 
 
 button[type="submit"].btn-secondary:hover {
-    background-color: #ffffff; /* Cambia el color al pasar el mouse */
+    background-color: #ffffff; 
 } 
 
 
@@ -103,9 +101,8 @@ button[type="submit"].btn-secondary:hover {
 #cabecera{
     border-color: #525050ba;
     background-color: rgba(70, 68, 68, 0.8);
-    position: fixed; /* Fija la cabecera en la parte superior */
-    top: 0; /* Se queda en la parte superior de la página */
-    left: 0;
+    position: fixed;
+    top: 0; 
     width: 100%;
     z-index: 1000;
 }
@@ -124,10 +121,10 @@ button[type="submit"].btn-secondary:hover {
 
 
 .img_nosotros {
-    max-width: 100%; /* Evita que la imagen sobrepase el contenedor */
-    height: auto; /* Mantiene la proporción */
+    max-width: 100%; 
+    height: auto; 
     display: block;
-    margin: auto; /* Centra horizontalmente */
+    margin: auto; 
 }
 
 #filtro{
@@ -137,13 +134,12 @@ button[type="submit"].btn-secondary:hover {
 /* Estilo personalizado para el grid */
 .fotos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* 200px es el ancho mínimo de cada columna */
-    gap:  15px; /* Espaciado entre las tarjetas */
-}
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); 
+    gap:  15px; }
 
 .card-img-top {
-    object-fit: cover; /* Asegura que la imagen se recorte para llenar el área del contenedor */
-    height: 500px; /* Tamaño fijo para las imágenes */
+    object-fit: cover;
+    height: 500px;
 }
 
 .contenedor_label_filtro {
@@ -154,7 +150,7 @@ button[type="submit"].btn-secondary:hover {
   }
   
   .etiqueta {
-    font-size: 20px; /* Ajusta el tamaño del texto según sea necesario */
+    font-size: 20px; 
     font-weight: 700;
     
   }
@@ -265,7 +261,7 @@ button[type="submit"].btn-secondary:hover {
     -ms-transform: scale(0.95);
     transform: scale(0.95);
   }
-/* Estilos solo para inputs con la clase .login_input */
+
 .login_input {
     background-color: #f6f6f6;
     border: none;
@@ -294,9 +290,7 @@ button[type="submit"].btn-secondary:hover {
   
   
   
-  /* ANIMATIONS */
-  
-  /* Simple CSS3 Fade-in-down Animation */
+
   .fadeInDown {
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown;
@@ -331,8 +325,7 @@ button[type="submit"].btn-secondary:hover {
       transform: none;
     }
   }
-  
-  /* Simple CSS3 Fade-in Animation */
+
   @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
   @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
   @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -376,7 +369,7 @@ button[type="submit"].btn-secondary:hover {
     animation-delay: 1s;
   }
   
-  /* Simple CSS3 Fade-in Animation */
+
   .underlineHover:after {
     display: block;
     left: 0;
