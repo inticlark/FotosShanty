@@ -75,7 +75,6 @@ def admin_login():
         if not _usuario or not _password:
             return render_template("admin/login.html", mensaje="Usuario y contraseña son obligatorios")
 
-        conexion = None
         cursor = None
         try:
             # Conectar a la base de datos
@@ -93,29 +92,27 @@ def admin_login():
             if usuario is None:
                 print("El usuario no existe en la base de datos.")  # Mensaje de depuración
                 return render_template("admin/login.html", mensaje="Usuario no encontrado")
-
-            print(f"Usuario encontrado: {usuario[1]}")  # Verifica el nombre de usuario
-            print(f"Contraseña almacenada: {usuario[2]}")  # Verifica la contraseña almacenada
-
-            # Compara la contraseña almacenada con la ingresada
-            if usuario[2].strip() == _password:
-                session["login"] = True
-                session["usuario"] = usuario[1]  # Asignamos el nombre de usuario a la sesión
-                session["id_usuario"] = usuario[0]  # Asignamos el id_usuario a la sesión
-                return redirect("/admin")  # Redirige a la página de administración
             else:
-                return render_template("admin/login.html", mensaje="Contraseña incorrecta")
+                print(f"Usuario encontrado: {usuario[1]}")  # Verifica el nombre de usuario
+                print(f"Contraseña almacenada: {usuario[2]}")  # Verifica la contraseña almacenada
 
+                # Compara la contraseña almacenada con la ingresada
+                if usuario[2].strip() == _password:
+                    session["login"] = True
+                    session["usuario"] = usuario[1]  # Asignamos el nombre de usuario a la sesión
+                    session["id_usuario"] = usuario[0]  # Asignamos el id_usuario a la sesión
+                    return redirect("/admin")  # Redirige a la página de administración
+                else:
+                    return render_template("admin/login.html", mensaje="Contraseña incorrecta")
+
+        
         except Exception as e:
-            print(f"Error en la base de datos: {e}")
-            return render_template("admin/login.html", mensaje="Error en la base de datos")
-
+            print(f"Error inesperado: {e}")
+            return render_template("admin/login.html", mensaje="Error inesperado")
         finally:
-            # Cierra el cursor y la conexión en el bloque finally
+            # Cierra solo el cursor
             if cursor:
                 cursor.close()
-            if conexion:
-                conexion.close()
 
     return render_template('admin/login.html')
 
