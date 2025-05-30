@@ -121,7 +121,7 @@ def admin_login():
 def admin_login_cerrar():
     session.clear()
     return redirect('/admin/login')
-
+    
 @app.route('/admin/fotos')
 def admin_fotos():
     if 'login' not in session:
