@@ -5,6 +5,10 @@ from flask import Flask, flash, render_template, request, redirect, session, sen
 from flask_mysqldb import MySQL
 from contextlib import contextmanager
 from MySQLdb import OperationalError
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 app = Flask(__name__)
 app.secret_key = "develoteca"
@@ -62,6 +66,14 @@ def fotos():
 @app.route('/nosotros')
 def nosotros():
     return render_template('sitio/nosotros.html')
+
+@app.route('/producto')
+def producto():
+    return render_template('sitio/producto.html')
+
+@app.route('/contacto')
+def contacto():
+    return render_template('sitio/contacto.html')
 
 @app.route('/admin/')
 def admin_index():
@@ -212,6 +224,61 @@ def admin_fotos_borrar():
 
     return redirect('/admin/fotos')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Configura tu email y contraseña de aplicación
 
+EMAIL_USER = 'clarkcordobainti@gmail.com'
+EMAIL_PASSWORD = 'ozne oxmx oqto hndb'
+
+@app.route('/sitio_web/contacto', methods=['GET', 'POST'])
+def email():
+    if request.method == "POST":
+        nombre = request.form.get('nombre', '').strip()
+        asunto = request.form.get('asunto', '').strip()
+        correo = request.form.get('email', '').strip()
+        mensaje = request.form.get('mensaje', '').strip()
+
+        # Validaciones del lado del servidor
+        if not nombre or not asunto or not correo or not mensaje:
+            flash('Todos los campos son obligatorios.', 'danger')
+            return redirect('/sitio_web/contacto')  # Redirige para mostrar el mensaje
+
+        # Validación simple de correo electrónico
+        if "@" not in correo or "." not in correo:
+            flash('El correo electrónico no es válido.', 'danger')
+            return redirect('/sitio_web/contacto')  # Redirige para mostrar el mensaje
+
+        # Cuerpo del correo
+        body = f"""
+        Nuevo mensaje del formulario:
+
+        Nombre y Apellido: {nombre}
+        Asunto: {asunto}
+        Correo del cliente: {correo}
+        Mensaje: {mensaje}
+        """
+
+        # Preparar y enviar
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_USER
+        msg['To'] = EMAIL_USER
+        msg['Subject'] = f'Nueva consulta: {asunto}'
+        msg.attach(MIMEText(body, 'plain'))
+
+        try:
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(EMAIL_USER, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_USER, EMAIL_USER, msg.as_string())
+            server.quit()
+            flash('Correo enviado correctamente.', 'success')  # Mensaje de éxito
+            
+        except Exception as e:
+            print(e)
+            flash('Error al enviar el correo.', 'danger')  # Mensaje de error
+
+        return redirect('/sitio_web/contacto')  # Redirige para mostrar el mensaje flash
+
+    return render_template("sitio/contacto.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
