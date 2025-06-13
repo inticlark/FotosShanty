@@ -122,20 +122,39 @@ def admin_login_cerrar():
     session.clear()
     return redirect('/admin/login')
     
+from datetime import datetime
+
 @app.route('/admin/fotos')
 def admin_fotos():
-    if 'login' not in session:
-        return redirect("/admin/login")
+    categoria = request.args.get('categoria')  # puede ser None o ''
 
-    fotos = execute_with_retry("SELECT * FROM `fotos`")
-    today = date.today().strftime('%Y-%m-%d')
-    return render_template("admin/fotos.html", fotos=fotos, today=today)
+    with get_db_cursor() as cursor:
+        if categoria and categoria.strip() != "":
+            cursor.execute("""
+                SELECT id_foto, nombre_fotografia, imagen, categoria_fotografia,fecha_subida 
+                FROM fotos 
+                WHERE categoria_fotografia = %s 
+                ORDER BY id_foto DESC
+            """, (categoria,))
+        else:
+            cursor.execute("""
+                SELECT id_foto, nombre_fotografia, imagen, categoria_fotografia,fecha_subida 
+                FROM fotos 
+                ORDER BY id_foto DESC
+            """)
+
+        fotos = cursor.fetchall()
+
+    fecha_hoy = datetime.now().strftime("%Y-%m-%d")
+
+    return render_template("admin/fotos.html", fotos=fotos, fecha_hoy=fecha_hoy)
+
 
 @app.route('/admin/fotos/guardar', methods=['POST'])
 def admin_libros_guardar():
     _nombre = request.form['txtNombre']
     _archivo = request.files['txtImagen']
-    _categoria = request.form['txtCategoria']
+    _categoria = request.form.get('txtCategoria')
     _date = request.form['txtDate']
 
     tiempo = datetime.now()
@@ -173,6 +192,59 @@ def admin_libros_guardar():
         return redirect('/admin/fotos')
 
     return redirect('/admin/fotos')
+
+@app.route('/admin/fotos/borrar_categoria', methods=['POST'])
+def admin_fotos_borrar_categoria():
+    if 'login' not in session:
+        return redirect("/admin/login")
+
+    categoria = request.form.get("categoria")
+    if not categoria:
+        flash("⚠️ No se especificó una categoría.", "error")
+        return redirect("/admin/fotos")
+
+    try:
+        with get_db_cursor() as cursor:
+            # Obtener las fotos que coinciden con la categoría
+            cursor.execute("SELECT id_foto, imagen, nombre_fotografia FROM fotos WHERE categoria_fotografia = %s", (categoria,))
+            fotos = cursor.fetchall()
+
+            if not fotos:
+                flash(f"No se encontraron imágenes en la categoría '{categoria}'.", "warning")
+                return redirect("/admin/fotos")
+
+            for id_foto, imagen, nombre_fotografia in fotos:
+                # Eliminar archivo físico
+                ruta_imagen = os.path.join("templates/sitio/img/", imagen)
+                if os.path.exists(ruta_imagen):
+                    os.unlink(ruta_imagen)
+
+                # Registrar interacción de eliminación
+                cursor.execute("""
+                    INSERT INTO interacciones (
+                        tipo_interaccion, fecha_interaccion, id_foto, id_usuario,
+                        nombre_fotografia, imagen, mensaje_comentario
+                    )
+                    VALUES ('borrado', NOW(), %s, %s, %s, %s, %s)
+                """, (
+                    id_foto,
+                    session.get("id_usuario", 1),  # Fallback a 1 si no hay ID de usuario
+                    nombre_fotografia,
+                    imagen,
+                    f"Borrado masivo de categoría: {categoria}"
+                ))
+
+            # Borrar de la base de datos
+            cursor.execute("DELETE FROM fotos WHERE categoria_fotografia = %s", (categoria,))
+            mysql.connection.commit()
+
+            flash(f"✅ Se eliminaron todas las imágenes de la categoría '{categoria}'.", "success")
+
+    except Exception as e:
+        print(f"[ERROR] al borrar por categoría: {e}")
+        flash("❌ Ocurrió un error al eliminar las imágenes de la categoría.", "error")
+
+    return redirect("/admin/fotos")
 
 @app.route('/admin/fotos/borrar', methods=['POST'])
 def admin_fotos_borrar():
